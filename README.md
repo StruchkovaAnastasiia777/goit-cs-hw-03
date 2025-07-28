@@ -32,7 +32,7 @@ pip install psycopg2-binary faker pymongo
 2. Відредагуйте `db_config.py` під свої налаштування:
 ```python
 # Замініть на свої дані
-host="localhost"
+host="localhost"  
 port="5432"
 user="postgres"
 password="ваш_пароль"
@@ -45,7 +45,7 @@ password="ваш_пароль"
 # Linux/Mac
 sudo systemctl start mongod
 
-# Windows
+# Windows  
 net start MongoDB
 ```
 
@@ -63,23 +63,30 @@ python seed.py
 ```
 **Результат:** Додає 10 користувачів, 3 статуси, 20 завдань
 
-### 3. Читання даних
+### 📖 Читання даних
 ```bash
 python queries_select.py
 ```
 **Функції:**
 - `query_1_user_tasks(user_id)` - завдання користувача
-- `query_2_user_status(status)` - завдання за статусом
+- `query_2_user_status(status)` - завдання за статусом  
 - `query_3_search_user_email(email)` - пошук за email
 - `query_4_users_not_task()` - користувачі без завдань
+- `query_5_add_new_task_select()` - додати завдання (SELECT версія)
+- `query_6_incomplete_tasks()` - незавершені завдання
+- `query_10_count_by_status()` - кількість завдань за статусом
+- `query_11_tasks_by_domain(domain)` - завдання за доменом email
+- `query_12_tasks_no_description()` - завдання без опису
+- `query_13_users_in_progress()` - користувачі з завданнями 'in progress'  
+- `query_14_users_task_count()` - користувачі та кількість завдань
 
-### 4. CRUD операції
+### 📝 CRUD операції
 ```bash
 python queries_crud.py
 ```
 **Функції:**
 - `query_3_update_task_status(task_id, new_status)` - оновити статус
-- `query_5_add_new_task(title, description, user_id)` - додати завдання
+- `query_5_add_new_task(title, description, user_id)` - додати завдання  
 - `query_7_delete_task(task_id)` - видалити завдання
 - `query_9_update_user_name(user_id, new_name)` - оновити ім'я
 - `show_database_stats()` - статистика БД
@@ -146,13 +153,13 @@ python main.py
 
 #### Додати нове завдання
 ```python
+# Через CRUD операції
 from queries_crud import query_5_add_new_task
+query_5_add_new_task("Вивчити Python", "Опанувати основи мови програмування", 1)
 
-query_5_add_new_task(
-    title="Вивчити Python", 
-    description="Опанувати основи мови програмування", 
-    user_id=1
-)
+# Через SELECT запити  
+from queries_select import query_5_add_new_task_select
+query_5_add_new_task_select("Новий проєкт", "Створити веб-додаток", 2)
 ```
 
 #### Знайти завдання за статусом
@@ -185,30 +192,6 @@ collection.insert_one(test_cat)
 ```python
 cat = collection.find_one({"name": "Мурзик"})
 ```
-
-## 🛠️ Налагодження
-
-### Поширені помилки PostgreSQL
-
-❌ **Помилка підключення**
-```
-psycopg2.OperationalError: could not connect to server
-```
-**Рішення:** Перевірте чи запущений PostgreSQL сервіс
-
-❌ **База не існує**
-```
-psycopg2.OperationalError: database "task_management" does not exist
-```
-**Рішення:** Запустіть `python create_tables.py`
-
-### Поширені помилки MongoDB
-
-❌ **Не можу підключитися**
-```
-pymongo.errors.ServerSelectionTimeoutError
-```
-**Рішення:** Запустіть MongoDB сервіс
 
 ## 📖 Корисні команди
 
